@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>National University, Bangladesh</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f4f6f9; margin: 0; padding: 0; color: #333; }
+        .top-mini { background-color: #f39c12; height: 5px; width: 100%; }
+        .main-header { background-color: #003366; color: white; padding: 20px; display: flex; align-items: center; justify-content: center; gap: 20px; border-bottom: 4px solid #f39c12; }
+        .main-header img { height: 80px; background-color: white; border-radius: 50%; padding: 3px; }
+        .header-text h1 { margin: 0; font-size: 24px; text-transform: uppercase; }
+        .header-text h2 { margin: 5px 0 0 0; font-size: 15px; color: #f39c12; font-weight: normal; }
+        .nav-bar { background-color: #222; overflow: hidden; display: flex; justify-content: center; }
+        .nav-bar a { display: block; color: #f2f2f2; text-align: center; padding: 14px 20px; text-decoration: none; font-size: 15px; font-weight: bold; }
+        .nav-bar a.active { background-color: #f39c12; color: #003366; }
+        .wrapper { max-width: 1100px; margin: 25px auto; padding: 0 15px; display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
+        @media (max-width: 768px) { .main-header { flex-direction: column; text-align: center; } .wrapper { grid-template-columns: 1fr; } }
+        .card { background: #fff; padding: 20px; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border-top: 4px solid #003366; margin-bottom: 20px; }
+        .card h3 { color: #003366; margin-top: 0; border-bottom: 2px solid #eee; padding-bottom: 10px; font-size: 18px; }
+        .notice-list { list-style: none; padding: 0; margin: 0; }
+        .notice-list li { padding: 10px 0; border-bottom: 1px solid #eee; font-size: 14px; }
+        .notice-date { background: #f39c12; color: #fff; padding: 2px 6px; border-radius: 3px; font-size: 11px; font-weight: bold; margin-right: 5px; }
+        .search-card { background: #fff; padding: 30px; border-radius: 4px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-top: 4px solid #f39c12; text-align: center; }
+        .form-group { margin-bottom: 15px; text-align: left; max-width: 400px; margin-left: auto; margin-right: auto; }
+        label { display: block; font-weight: bold; margin-bottom: 8px; color: #003366; }
+        input { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 16px; }
+        .btn-search { width: 100%; max-width: 400px; padding: 12px; background-color: #003366; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; font-weight: bold; margin-top: 10px; }
+        #result-display { display: none; margin-top: 30px; grid-column: 1 / -1; }
+        .result-container { background-color: #fff; border: 2px solid #003366; padding: 30px; }
+        .res-header { text-align: center; border-bottom: 2px solid #000; margin-bottom: 20px; padding-bottom: 10px; }
+        .result-table, .marks-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        .result-table th, .result-table td, .marks-table th, .marks-table td { border: 1px solid #999; padding: 10px; text-align: left; font-size: 14px; }
+        .result-table th { background-color: #f8f9fa; width: 35%; color: #003366; }
+        .marks-table th { background-color: #003366; color: #fff; text-align: center; }
+        .error { color: #d9534f; font-weight: bold; margin-top: 10px; }
+        .footer { background: #222; color: #aaa; text-align: center; padding: 15px; font-size: 13px; margin-top: 40px; }
+        @media print { .nav-bar, .main-header, .wrapper, .footer { display: none; } #result-display { display: block; } .result-container { border: none; } }
+    </style>
+</head>
+<body>
+<div class="top-mini"></div>
+<div class="main-header">
+    <img src="https://i.ibb.co/6wD0XmY/National-University-Logo.png" alt="NU Logo">
+    <div class="header-text">
+        <h1>National University</h1>
+        <h2>Gazipur-1704, Bangladesh</h2>
+    </div>
+</div>
+<div class="nav-bar">
+    <a href="#">Home</a>
+    <a href="#" class="active">Result Search</a>
+    <a href="#">Notice</a>
+</div>
+<div class="wrapper">
+    <div class="search-card">
+        <h3 style="color: #003366; margin-top:0; border-bottom: 1px solid #ddd; padding-bottom: 10px;">EXAMINATION RESULT PORTAL</h3>
+        <div class="form-group">
+            <label for="rollInput">Roll Number</label>
+            <input type="text" id="rollInput" placeholder="Enter Roll Number (e.g., 301582)">
+        </div>
+        <button class="btn-search" onclick="searchResult()">SEARCH RESULT</button>
+        <p id="errorMessage" class="error"></p>
+    </div>
+    <div>
+        <div class="card">
+            <h3>Latest Notices</h3>
+            <ul class="notice-list">
+                <li><span class="notice-date">New</span> Degree Pass Exam Result Published</li>
+                <li><span class="notice-date">25 May</span> Form Fill-up Notice for Exam</li>
+            </ul>
+        </div>
+    </div>
+    <div id="result-display">
+        <div class="result-container">
+            <div class="res-header">
+                <h2 style="margin:0; color: #003366;">National University</h2>
+                <h3 style="margin:5px 0; color: #555;">Gazipur, Bangladesh</h3>
+                <p style="text-decoration: underline; color: #003366;"><strong>ACADEMIC TRANSCRIPT / RESULT SHEET</strong></p>
+            </div>
+            <table class="result-table">
+                <tr><th>Student's Name</th><td id="resName" style="font-weight: bold;"></td></tr>
+                <tr><th>College / Institution</th><td id="resCollege"></td></tr>
+                <tr><th>Roll Number</th><td id="resRoll"></td></tr>
+                <tr><th>Registration No.</th><td id="resReg"></td></tr>
+                <tr><th>Session</th><td id="resSession"></td></tr>
+                <tr><th>Final Result</th><td id="resGrade" style="font-weight:bold; color: #003366;"></td></tr>
+            </table>
+            <table class="marks-table">
+                <thead>
+                    <tr><th>Course Code</th><th>Course Title</th><th>Theoretical Marks</th><th>Practical Marks</th></tr>
+                </thead>
+                <tbody id="marksBody"></tbody>
+            </table>
+            <div style="margin-top: 40px; display: flex; justify-content: space-between; font-size: 13px;">
+                <div>Status: Verified Online</div>
+                <div style="text-align: right;"><p><strong>sd/-</strong></p><p style="margin:0;">Controller of Examinations</p></div>
+            </div>
+        </div>
+        <center><button onclick="window.print()" style="background-color: #555; color: #fff; border: none; padding: 10px 20px; font-weight: bold; margin-top: 20px; border-radius: 4px; cursor: pointer;">Print / Save PDF</button></center>
+    </div>
+</div>
+<div class="footer">&copy; 2026 National University, Gazipur, Bangladesh. All Rights Reserved.</div>
+<script>
+    const studentData = {
+        "301582": {
+            name: "MOSTAKIM HOSSAIN",
+            college: "(2806) MONGOLBARI M.M. COLLEGE, JOYPURHAT",
+            reg: "0362473",
+            session: "2002-2003",
+            result: "SECOND DIVISION",
+            marks: [
+                {code: "101", title: "Accounting", theory: "55", practical: "-"},
+                {code: "102", title: "Management", theory: "48", practical: "-"}
+            ]
+        }
+    };
+    function searchResult() {
+        const roll = document.getElementById("rollInput").value;
+        const display = document.getElementById("result-display");
+        const error = document.getElementById("errorMessage");
+        if (studentData[roll]) {
+            const s = studentData[roll];
+            error.innerText = "";
+            display.style.display = "block";
+            document.getElementById("resName").innerText = s.name;
+            document.getElementById("resCollege").innerText = s.college;
+            document.getElementById("resRoll").innerText = roll;
+            document.getElementById("resReg").innerText = s.reg;
+            document.getElementById("resSession").innerText = s.session;
+            document.getElementById("resGrade").innerText = s.result;
+            const tbody = document.getElementById("marksBody");
+            tbody.innerHTML = "";
+            s.marks.forEach(m => {
+                tbody.innerHTML += `<tr><td align="center">${m.code}</td><td>${m.title}</td><td align="center">${m.theory}</td><td align="center">${m.practical}</td></tr>`;
+            });
+            display.scrollIntoView({ behavior: 'smooth' });
+        } else {
+            display.style.display = "none";
+            error.innerText = "Roll not found! Try: 301582";
+        }
+    }
+</script>
+</body>
+</html>
